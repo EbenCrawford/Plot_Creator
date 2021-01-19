@@ -1188,7 +1188,7 @@ def x_axis_fields():
     dd_box_chunk = ttk.Combobox(x_axis_lf, textvariable=plot_chunk_name, values=list(df_ax_1))
     dd_box_chunk.configure(width=18, font= ("Calibri", 12))
     dd_box_chunk.grid(row=0, column=2,padx=8, pady=3)
-    #dd_box_chunk.delete(0, END)
+    dd_box_chunk.delete(0, END)
     dd_box_chunk.insert(0, "Chunk by Column")
     
     # ----------------X Min Max-----------------------------------------------
@@ -1361,7 +1361,7 @@ def annot_fields():
     
     annot_2_e = Entry(annot_tab, textvariable = annot_2, width=15,justify='center')
     annot_2_e.grid(row=1, column=1, padx=5, pady=5, sticky='e')
-    annot_2_e.delete(1, END)
+    annot_2_e.delete(0, END)
     annot_2_e.insert(1, "Annotation (2)")
     
     annot_arrow_2_dd = ttk.Combobox(annot_tab, textvariable=annot_arrow_2, values=annot_arrow_table)

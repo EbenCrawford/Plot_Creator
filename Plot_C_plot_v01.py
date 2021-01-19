@@ -330,14 +330,15 @@ def cont_x_plot_gen(p_type,axis):
                 if axis_df_list[axis] == df_select_list[z]:
                     df_a = df_list[z]
 
-                        
-
-            if p_type == "scatter":
-                if pcg.plot_chunk_name.get() != "Chunk by Column":
+            if pcg.plot_chunk_name.get() != "Chunk by Column":
                     
                     uniqueValues = pd.unique(df_a[pcg.plot_chunk_name.get()].tolist())
                     uniqueValues = list(uniqueValues)
+            
 
+            if p_type == "scatter":
+                
+                if pcg.plot_chunk_name.get() != "Chunk by Column":
                     for un in range(0,len(uniqueValues)):  
 
                         df_chunk = df_a[df_a[pcg.plot_chunk_name.get()]==uniqueValues[un]] 
@@ -359,27 +360,47 @@ def cont_x_plot_gen(p_type,axis):
                             label=legen_list[x],
                             s=plot_m_size[axis],
                             marker=mark_sty[x])
-       
-
-                
-
 
             elif p_type == "plot":
 
-                df_a.plot(x=x_var,
-                          y=var_val_list[x],
-                          ax=axis_var_list[axis],
-                          color=plot_color_list[x],
-                          label=legen_list[x])
+                if pcg.plot_chunk_name.get() != "Chunk by Column":
+                    for un in range(0,len(uniqueValues)):  
+
+                        df_chunk = df_a[df_a[pcg.plot_chunk_name.get()]==uniqueValues[un]] 
+                        df_chunk.plot(kind=p_type,
+                            x=x_var,
+                            y=var_val_list[x],
+                            ax=axis_var_list[axis],
+                            color=plot_color_list[un],
+                            label=uniqueValues[un])
+                else:   
+
+                    df_a.plot(x=x_var,
+                              y=var_val_list[x],
+                              ax=axis_var_list[axis],
+                              color=plot_color_list[x],
+                              label=legen_list[x])
 
             elif p_type == "line":
 
-                df_a.plot(kind=p_type,
-                          x=x_var,
-                          y=var_val_list[x],
-                          ax=axis_var_list[axis],
-                          color=plot_color_list[x],
-                          label=legen_list[x])
+                if pcg.plot_chunk_name.get() != "Chunk by Column":
+                    for un in range(0,len(uniqueValues)):  
+
+                        df_chunk = df_a[df_a[pcg.plot_chunk_name.get()]==uniqueValues[un]] 
+                        df_chunk.plot(kind=p_type,
+                            x=x_var,
+                            y=var_val_list[x],
+                            ax=axis_var_list[axis],
+                            color=plot_color_list[un],
+                            label=uniqueValues[un])
+                else:                   
+
+                    df_a.plot(kind=p_type,
+                              x=x_var,
+                              y=var_val_list[x],
+                              ax=axis_var_list[axis],
+                              color=plot_color_list[x],
+                              label=legen_list[x])
 
             elif p_type == "area":
 
@@ -400,12 +421,24 @@ def cont_x_plot_gen(p_type,axis):
                           gridsize=plot_m_size[axis])
 
             elif p_type == "density":
+                
+                if pcg.plot_chunk_name.get() != "Chunk by Column":
+                    for un in range(0,len(uniqueValues)):  
 
-                df_a.plot(kind=p_type,
-                          y=var_val_list[x],
-                          ax=axis_var_list[axis],
-                          label=legen_list[x],
-                          alpha=0.5)
+                        df_chunk = df_a[df_a[pcg.plot_chunk_name.get()]==uniqueValues[un]] 
+                        df_chunk.plot(kind=p_type,
+                            y=var_val_list[x],
+                            ax=axis_var_list[axis],
+                            label=uniqueValues[un],
+                            alpha=0.5)
+                else:                   
+
+                
+                    df_a.plot(kind=p_type,
+                              y=var_val_list[x],
+                              ax=axis_var_list[axis],
+                              label=legen_list[x],
+                              alpha=0.5)
 
             elif p_type == "hist":
 
