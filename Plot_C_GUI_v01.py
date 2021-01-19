@@ -303,6 +303,10 @@ plot_color_10_1 = StringVar()
 
 Var_Col_x = StringVar()
 
+# ------------Chunk Plotted Data----------------------------------------------
+
+plot_chunk_name = StringVar()
+
 # ------------Plot Variables--------------------------------------------------
 
 Plot_Name = StringVar()
@@ -1168,34 +1172,42 @@ def x_axis_fields():
     # ----------------X AXIS TITLE--------------------------------------------
 
     global x_axis_title_e
-    x_axis_title_e = Entry(x_axis_lf, textvariable = x_axis_title, width=30, font= ("Calibri", 12))
-    x_axis_title_e.grid(row=0, column=0,padx=15, pady=3, sticky='e')
+    x_axis_title_e = Entry(x_axis_lf, textvariable = x_axis_title, width=20, font= ("Calibri", 12))
+    x_axis_title_e.grid(row=0, column=0,padx=8, pady=3, sticky='e')
     x_axis_title_e.delete(0, END)
     x_axis_title_e.insert(0, "X-Axis-Title")
 
     # ----------------X Axis Dropdown-----------------------------------------
     
     dd_box_x = ttk.Combobox(x_axis_lf, textvariable=Var_Col_x, values=list(df_ax_1))
-    dd_box_x.configure(width=22, font= ("Calibri", 12))
-    dd_box_x.grid(row=0, column=1,padx=10, pady=3)
+    dd_box_x.configure(width=18, font= ("Calibri", 12))
+    dd_box_x.grid(row=0, column=1,padx=8, pady=3)
+    
+    # ----------------Chunk Dropdown------------------------------------------
+    
+    dd_box_chunk = ttk.Combobox(x_axis_lf, textvariable=plot_chunk_name, values=list(df_ax_1))
+    dd_box_chunk.configure(width=18, font= ("Calibri", 12))
+    dd_box_chunk.grid(row=0, column=2,padx=8, pady=3)
+    #dd_box_chunk.delete(0, END)
+    dd_box_chunk.insert(0, "Chunk by Column")
     
     # ----------------X Min Max-----------------------------------------------
     
     x_axis_min_label =Label(x_axis_lf, text="X Min", bg = back_color,fg = forg_color, font= ("Calibri", 12))
-    x_axis_min_label.grid(row=0, column=2, padx=5, pady=5, sticky='nesw')
+    x_axis_min_label.grid(row=0, column=3, padx=5, pady=5, sticky='nesw')
     
     global plot_x_axis_min_e
     plot_x_axis_min_e = Entry(x_axis_lf, textvariable = plot_x_axis_min, width=10,justify='center', font= ("Calibri", 12))
-    plot_x_axis_min_e.grid(row=0, column=3, padx=5, pady=5, sticky='nesw')
+    plot_x_axis_min_e.grid(row=0, column=4, padx=5, pady=5, sticky='nesw')
     plot_x_axis_min_e.delete(0, END)
     plot_x_axis_min_e.insert(0, "0")
 
     x_axis_max_label =Label(x_axis_lf, text="X Max", bg = back_color,fg = forg_color, font= ("Calibri", 12))
-    x_axis_max_label.grid(row=0, column=4, padx=5, pady=5, sticky='nesw')
+    x_axis_max_label.grid(row=0, column=5, padx=5, pady=5, sticky='nesw')
     
     global plot_x_axis_max_e
     plot_x_axis_max_e = Entry(x_axis_lf, textvariable = plot_x_axis_max, width=10,justify='center', font= ("Calibri", 12))
-    plot_x_axis_max_e.grid(row=0, column=5, padx=5, pady=5, sticky='nesw')
+    plot_x_axis_max_e.grid(row=0, column=6, padx=5, pady=5, sticky='nesw')
     plot_x_axis_max_e.delete(0, END)
     plot_x_axis_max_e.insert(0, "25")
 

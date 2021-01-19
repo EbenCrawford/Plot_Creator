@@ -11,10 +11,12 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import tkinter.scrolledtext as scrolledtext
 from tkinter import ttk
 import ctypes
 from sklearn.metrics import *
+from sklearn.preprocessing import OrdinalEncoder
 
 
 import Plot_C_GUI_v01 as pcg
@@ -322,20 +324,45 @@ def cont_x_plot_gen(p_type,axis):
             
         if var_val_list[x] != nul_var_list[x]:
 
+            # ===============Select Dataframe and Chunking====================
+            
             for z in range(0, 3):
                 if axis_df_list[axis] == df_select_list[z]:
                     df_a = df_list[z]
 
-            if p_type == "scatter":
+                        
 
-                df_a.plot(kind=p_type,
-                          x=x_var,
-                          y=var_val_list[x],
-                          ax=axis_var_list[axis],
-                          c=plot_color_list[x],
-                          label=legen_list[x],
-                          s=plot_m_size[axis],
-                          marker=mark_sty[x])
+            if p_type == "scatter":
+                if pcg.plot_chunk_name.get() != "Chunk by Column":
+                    
+                    uniqueValues = pd.unique(df_a[pcg.plot_chunk_name.get()].tolist())
+                    uniqueValues = list(uniqueValues)
+
+                    for un in range(0,len(uniqueValues)):  
+
+                        df_chunk = df_a[df_a[pcg.plot_chunk_name.get()]==uniqueValues[un]] 
+                        df_chunk.plot(kind=p_type,
+                            x=x_var,
+                            y=var_val_list[x],
+                            ax=axis_var_list[axis],
+                            c=plot_color_list[un],
+                            label=uniqueValues[un],
+                            s=plot_m_size[axis],
+                            marker=mark_sty[x])
+                else:
+                
+                    df_a.plot(kind=p_type,
+                            x=x_var,
+                            y=var_val_list[x],
+                            ax=axis_var_list[axis],
+                            c=plot_color_list[x],
+                            label=legen_list[x],
+                            s=plot_m_size[axis],
+                            marker=mark_sty[x])
+       
+
+                
+
 
             elif p_type == "plot":
 
@@ -585,21 +612,21 @@ def add_regression(x_axis,x_min,x_max,y_axis,r_s_axis,reg_t):
                 
                 
     # ============================UPDATE LEGEND ==============================
-    
-    if pcg.y_title_1.get() != "('Y Axis 1',)" and pcg.y_title_1_1.get() == "('Y Axis 1',)":    
+    if pcg.plot_chunk_name == "Chunk by Column":
+        if pcg.y_title_1.get() != "('Y Axis 1',)" and pcg.y_title_1_1.get() == "('Y Axis 1',)":    
+                
+            ax.legend(bbox_to_anchor=(0.50, -0.15), loc=9, borderaxespad=0.,fancybox=True, shadow=True, ncol=5, fontsize=8)
+            ax.set_xlabel(pcg.x_axis_title.get(), size=12)
+            ax.set_ylabel(pcg.y_axis_title.get(), size=12)
+        #else:    
+        elif pcg.y_title_1.get() != "('Y Axis 1',)" and pcg.y_title_1_1.get() != "('Y Axis 1',)":
+            ax.legend(bbox_to_anchor=(0.25, -0.15), loc=9, borderaxespad=0.,fancybox=True, shadow=True, ncol=5, fontsize=6)
+            ax.set_xlabel(pcg.x_axis_title.get(), size=12)
+            ax.set_ylabel(pcg.y_axis_title.get(), size=12)
             
-        ax.legend(bbox_to_anchor=(0.50, -0.15), loc=9, borderaxespad=0.,fancybox=True, shadow=True, ncol=5, fontsize=8)
-        ax.set_xlabel(pcg.x_axis_title.get(), size=12)
-        ax.set_ylabel(pcg.y_axis_title.get(), size=12)
-    #else:    
-    elif pcg.y_title_1.get() != "('Y Axis 1',)" and pcg.y_title_1_1.get() != "('Y Axis 1',)":
-        ax.legend(bbox_to_anchor=(0.25, -0.15), loc=9, borderaxespad=0.,fancybox=True, shadow=True, ncol=5, fontsize=6)
-        ax.set_xlabel(pcg.x_axis_title.get(), size=12)
-        ax.set_ylabel(pcg.y_axis_title.get(), size=12)
-        
-        ax_1.legend(bbox_to_anchor=(0.75, -0.15), loc=9, borderaxespad=0.,fancybox=True, shadow=True, ncol=5, fontsize=6)
-        ax_1.set_ylabel(pcg.y_axis_title_1.get(), size=12)
-        ax_1.set_ylim([float(pcg.plot_y_axis_min_1.get()),float(pcg.plot_y_axis_max_1.get())])
+            ax_1.legend(bbox_to_anchor=(0.75, -0.15), loc=9, borderaxespad=0.,fancybox=True, shadow=True, ncol=5, fontsize=6)
+            ax_1.set_ylabel(pcg.y_axis_title_1.get(), size=12)
+            ax_1.set_ylim([float(pcg.plot_y_axis_min_1.get()),float(pcg.plot_y_axis_max_1.get())])
         
 # ===========================================================================
 
