@@ -12,6 +12,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from matplotlib.animation import FuncAnimation
 import tkinter.scrolledtext as scrolledtext
 from tkinter import ttk
 import ctypes
@@ -19,8 +20,13 @@ from sklearn.metrics import *
 from sklearn.preprocessing import OrdinalEncoder
 
 
+
 import Plot_C_GUI_v01 as pcg
 import Plot_C_dataframe_v01 as pcd
+
+# ==============Plot Animation
+
+
 
 
 # ==============Update Plot=================================================
@@ -404,21 +410,47 @@ def cont_x_plot_gen(p_type,axis):
 
             elif p_type == "area":
 
-                df_a.plot(kind=p_type,
-                          x=x_var,
-                          y=var_val_list[x],
-                          ax=axis_var_list[axis],
-                          label=legen_list[x],
-                          stacked=True)
+                
+                if pcg.plot_chunk_name.get() != "Chunk by Column":
+                    for un in range(0,len(uniqueValues)):  
+
+                        df_chunk = df_a[df_a[pcg.plot_chunk_name.get()]==uniqueValues[un]] 
+                        df_chunk.plot(kind=p_type,
+                            x=x_var,
+                            y=var_val_list[x],
+                            ax=axis_var_list[axis],
+                            color=plot_color_list[un],
+                            label=uniqueValues[un])
+                else:                   
+                        
+                    df_a.plot(kind=p_type,
+                              x=x_var,
+                              y=var_val_list[x],
+                              ax=axis_var_list[axis],
+                              label=legen_list[x],
+                              stacked=True)
 
             elif p_type == "hexbin":
 
-                df_a.plot(kind=p_type,
-                          x=x_var,
-                          y=var_val_list[x],
-                          ax=axis_var_list[axis],
-                          label=legen_list[x],
-                          gridsize=plot_m_size[axis])
+                if pcg.plot_chunk_name.get() != "Chunk by Column":
+                    for un in range(0,len(uniqueValues)):  
+
+                        df_chunk = df_a[df_a[pcg.plot_chunk_name.get()]==uniqueValues[un]] 
+                        df_chunk.plot(kind=p_type,
+                            x=x_var,
+                            y=var_val_list[x],
+                            ax=axis_var_list[axis],
+                            label=uniqueValues[un],
+                            gridsize=plot_m_size[axis])
+                
+                    else:
+                        
+                        df_a.plot(kind=p_type,
+                                  x=x_var,
+                                  y=var_val_list[x],
+                                  ax=axis_var_list[axis],
+                                  label=legen_list[x],
+                                  gridsize=plot_m_size[axis])
 
             elif p_type == "density":
                 
